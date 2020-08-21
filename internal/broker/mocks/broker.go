@@ -5,48 +5,9 @@
 package mock_broker
 
 import (
-	dto "github.com/b00lduck/rest-websocket-tester/internal/dto"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
-
-// MockMarshaller is a mock of Marshaller interface
-type MockMarshaller struct {
-	ctrl     *gomock.Controller
-	recorder *MockMarshallerMockRecorder
-}
-
-// MockMarshallerMockRecorder is the mock recorder for MockMarshaller
-type MockMarshallerMockRecorder struct {
-	mock *MockMarshaller
-}
-
-// NewMockMarshaller creates a new mock instance
-func NewMockMarshaller(ctrl *gomock.Controller) *MockMarshaller {
-	mock := &MockMarshaller{ctrl: ctrl}
-	mock.recorder = &MockMarshallerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockMarshaller) EXPECT() *MockMarshallerMockRecorder {
-	return m.recorder
-}
-
-// Marshal mocks base method
-func (m *MockMarshaller) Marshal(message []byte) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Marshal", message)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Marshal indicates an expected call of Marshal
-func (mr *MockMarshallerMockRecorder) Marshal(message interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Marshal", reflect.TypeOf((*MockMarshaller)(nil).Marshal), message)
-}
 
 // MockBroadcaster is a mock of Broadcaster interface
 type MockBroadcaster struct {
@@ -72,7 +33,7 @@ func (m *MockBroadcaster) EXPECT() *MockBroadcasterMockRecorder {
 }
 
 // Broadcast mocks base method
-func (m *MockBroadcaster) Broadcast(message dto.Message) {
+func (m *MockBroadcaster) Broadcast(message []byte) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Broadcast", message)
 }

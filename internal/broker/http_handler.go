@@ -11,18 +11,18 @@ func MessageHandler(logger log.SugaredLogger, broker Broker, w http.ResponseWrit
 
 	message, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		logger.Error("error reading http request body", err)
+		logger.Errorw("error reading http request body", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if len(message) < 1 {
-		logger.Error("missing message")
+		logger.Errorw("missing message")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	logger.Info("Received new message",
+	logger.Infow("Received new message",
 		"messageLength", len(message))
 	broker.Message(message)
 

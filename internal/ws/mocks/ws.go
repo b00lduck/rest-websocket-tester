@@ -5,7 +5,6 @@
 package mock_ws
 
 import (
-	dto "github.com/b00lduck/rest-websocket-tester/internal/dto"
 	ws "github.com/b00lduck/rest-websocket-tester/internal/ws"
 	gomock "github.com/golang/mock/gomock"
 	io "io"
@@ -38,10 +37,10 @@ func (m *MockClient) EXPECT() *MockClientMockRecorder {
 }
 
 // Send mocks base method
-func (m *MockClient) Send() chan dto.Message {
+func (m *MockClient) Send() chan []byte {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send")
-	ret0, _ := ret[0].(chan dto.Message)
+	ret0, _ := ret[0].(chan []byte)
 	return ret0
 }
 
@@ -147,7 +146,7 @@ func (mr *MockHubMockRecorder) Register(c interface{}) *gomock.Call {
 }
 
 // Broadcast mocks base method
-func (m *MockHub) Broadcast(message dto.Message) {
+func (m *MockHub) Broadcast(message []byte) {
 	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Broadcast", message)
 }

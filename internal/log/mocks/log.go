@@ -32,82 +32,87 @@ func (m *MockSugaredLogger) EXPECT() *MockSugaredLoggerMockRecorder {
 	return m.recorder
 }
 
-// Debug mocks base method
-func (m *MockSugaredLogger) Debug(args ...interface{}) {
+// Debugw mocks base method
+func (m *MockSugaredLogger) Debugw(arg0 string, arg1 ...interface{}) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range args {
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
-	m.ctrl.Call(m, "Debug", varargs...)
+	m.ctrl.Call(m, "Debugw", varargs...)
 }
 
-// Debug indicates an expected call of Debug
-func (mr *MockSugaredLoggerMockRecorder) Debug(args ...interface{}) *gomock.Call {
+// Debugw indicates an expected call of Debugw
+func (mr *MockSugaredLoggerMockRecorder) Debugw(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Debug", reflect.TypeOf((*MockSugaredLogger)(nil).Debug), args...)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Debugw", reflect.TypeOf((*MockSugaredLogger)(nil).Debugw), varargs...)
 }
 
-// Info mocks base method
-func (m *MockSugaredLogger) Info(args ...interface{}) {
+// Infow mocks base method
+func (m *MockSugaredLogger) Infow(arg0 string, arg1 ...interface{}) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range args {
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
-	m.ctrl.Call(m, "Info", varargs...)
+	m.ctrl.Call(m, "Infow", varargs...)
 }
 
-// Info indicates an expected call of Info
-func (mr *MockSugaredLoggerMockRecorder) Info(args ...interface{}) *gomock.Call {
+// Infow indicates an expected call of Infow
+func (mr *MockSugaredLoggerMockRecorder) Infow(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Info", reflect.TypeOf((*MockSugaredLogger)(nil).Info), args...)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Infow", reflect.TypeOf((*MockSugaredLogger)(nil).Infow), varargs...)
 }
 
-// Warn mocks base method
-func (m *MockSugaredLogger) Warn(args ...interface{}) {
+// Warnw mocks base method
+func (m *MockSugaredLogger) Warnw(arg0 string, arg1 ...interface{}) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range args {
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
-	m.ctrl.Call(m, "Warn", varargs...)
+	m.ctrl.Call(m, "Warnw", varargs...)
 }
 
-// Warn indicates an expected call of Warn
-func (mr *MockSugaredLoggerMockRecorder) Warn(args ...interface{}) *gomock.Call {
+// Warnw indicates an expected call of Warnw
+func (mr *MockSugaredLoggerMockRecorder) Warnw(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Warn", reflect.TypeOf((*MockSugaredLogger)(nil).Warn), args...)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Warnw", reflect.TypeOf((*MockSugaredLogger)(nil).Warnw), varargs...)
 }
 
-// Error mocks base method
-func (m *MockSugaredLogger) Error(args ...interface{}) {
+// Errorw mocks base method
+func (m *MockSugaredLogger) Errorw(arg0 string, arg1 ...interface{}) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range args {
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
-	m.ctrl.Call(m, "Error", varargs...)
+	m.ctrl.Call(m, "Errorw", varargs...)
 }
 
-// Error indicates an expected call of Error
-func (mr *MockSugaredLoggerMockRecorder) Error(args ...interface{}) *gomock.Call {
+// Errorw indicates an expected call of Errorw
+func (mr *MockSugaredLoggerMockRecorder) Errorw(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*MockSugaredLogger)(nil).Error), args...)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Errorw", reflect.TypeOf((*MockSugaredLogger)(nil).Errorw), varargs...)
 }
 
-// Fatal mocks base method
-func (m *MockSugaredLogger) Fatal(args ...interface{}) {
+// Fatalw mocks base method
+func (m *MockSugaredLogger) Fatalw(arg0 string, arg1 ...interface{}) {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{}
-	for _, a := range args {
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
-	m.ctrl.Call(m, "Fatal", varargs...)
+	m.ctrl.Call(m, "Fatalw", varargs...)
 }
 
-// Fatal indicates an expected call of Fatal
-func (mr *MockSugaredLoggerMockRecorder) Fatal(args ...interface{}) *gomock.Call {
+// Fatalw indicates an expected call of Fatalw
+func (mr *MockSugaredLoggerMockRecorder) Fatalw(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fatal", reflect.TypeOf((*MockSugaredLogger)(nil).Fatal), args...)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fatalw", reflect.TypeOf((*MockSugaredLogger)(nil).Fatalw), varargs...)
 }

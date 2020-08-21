@@ -6,12 +6,10 @@ import (
 	"io"
 	"net"
 	"time"
-
-	"github.com/b00lduck/rest-websocket-tester/internal/dto"
 )
 
 type Client interface {
-	Send() chan dto.Message
+	Send() chan []byte
 	Close()
 	Lock()
 	Unlock()
@@ -21,7 +19,7 @@ type Hub interface {
 	Run()
 	Unregister(c Client)
 	Register(c Client)
-	Broadcast(message dto.Message)
+	Broadcast(message []byte)
 	NumClients() int
 }
 

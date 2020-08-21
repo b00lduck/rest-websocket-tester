@@ -6,7 +6,6 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/b00lduck/rest-websocket-tester/internal/dto"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +15,7 @@ func TestSend(t *testing.T) {
 	a := assert.New(t)
 
 	// and
-	ch := make(chan dto.Message)
+	ch := make(chan []byte)
 
 	testSubject := client{
 		send: ch}
@@ -34,7 +33,7 @@ func TestClose(t *testing.T) {
 	a := assert.New(t)
 
 	// and
-	ch := make(chan dto.Message)
+	ch := make(chan []byte)
 
 	testSubject := client{
 		send: ch}

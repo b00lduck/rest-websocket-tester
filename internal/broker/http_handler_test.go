@@ -28,7 +28,7 @@ func TestMessageHandler(t *testing.T) {
 
 	// and
 	loggerMock := mock_log.NewMockSugaredLogger(ctrl)
-	loggerMock.EXPECT().Info("Received new message", "messageLength", 11)
+	loggerMock.EXPECT().Infow("Received new message", "messageLength", 11)
 
 	// and custom test router
 	r := mux.NewRouter()
@@ -59,7 +59,7 @@ func TestMessageHandlerMissingMessage(t *testing.T) {
 
 	// and
 	loggerMock := mock_log.NewMockSugaredLogger(ctrl)
-	loggerMock.EXPECT().Error("missing message")
+	loggerMock.EXPECT().Errorw("missing message")
 
 	// and custom test router
 	r := mux.NewRouter()
@@ -87,7 +87,7 @@ func TestMessageHandlerReadError(t *testing.T) {
 
 	// and
 	loggerMock := mock_log.NewMockSugaredLogger(ctrl)
-	loggerMock.EXPECT().Error("error reading http request body", errors.New("some error"))
+	loggerMock.EXPECT().Errorw("error reading http request body", "error", errors.New("some error"))
 
 	// and custom test router
 	r := mux.NewRouter()

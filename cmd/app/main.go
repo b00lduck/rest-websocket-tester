@@ -33,7 +33,7 @@ func main() {
 
 	// Root websocket handler
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		ws.Handler(hub, b, w, r)
+		ws.Handler(logger, hub, b, w, r)
 	}).Methods(http.MethodGet)
 
 	// Post new message handler
@@ -41,14 +41,14 @@ func main() {
 		broker.MessageHandler(logger, b, w, r)
 	}).Methods(http.MethodPost)
 
-	logger.Info("Start to listen",
+	logger.Infow("Start to listen",
 		"listenAddress", listen)
 
 	err := http.ListenAndServe(listen, r)
 	if err != nil {
 		logger.Fatal("Error listening",
 			"listenAddress", listen,
-			"err", err)
+			"error", err)
 	}
 
 	logger.Info("Exiting websocket test server")
