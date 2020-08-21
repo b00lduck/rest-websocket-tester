@@ -16,3 +16,9 @@ You may also run this to send a message to the websocket:
 ```
 curl -d "HAHA" localhost:8080
 ```
+
+## Run with docker
+
+```
+docker run -p 8080:8080 zerlett/rest-websocket-tester:v1
+```
