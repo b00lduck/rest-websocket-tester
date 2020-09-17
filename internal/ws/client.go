@@ -20,7 +20,7 @@ const (
 	pongWait = 60 * time.Second
 
 	// Send pings to peer with this period. Must be less than pongWait.
-	pingPeriod = 30 * time.Second
+	pingPeriod = 10 * time.Second
 )
 
 type client struct {
@@ -47,13 +47,6 @@ func (c *client) readPump() {
 	defer func() {
 		c.quit <- true
 	}()
-
-	c.conn.SetReadDeadline(time.Now().Add(10000 * time.Hour))
-	//c.conn.SetPongHandler(func(pong string) error {
-	//	c.logger.Infow("Pong handler", "pong", pong)
-	//	c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	//	return nil
-	//})
 
 	for c.stop != true {
 		_, msg, err := c.conn.ReadMessage()
@@ -91,6 +84,7 @@ func (c *client) writePump() {
 
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
+		c.logger.Infow("Send PING")
 		ticker.Stop()
 		c.quit <- true
 	}()
@@ -98,7 +92,6 @@ func (c *client) writePump() {
 	for c.stop != true {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// The hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
@@ -108,7 +101,7 @@ func (c *client) writePump() {
 			c.sendMessage(message)
 
 		case <-ticker.C:
-			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
+			if err := c.conn.WriteMessage(websocket.PingMessage, []byte{42}); err != nil {
 				return
 			}
 		}
