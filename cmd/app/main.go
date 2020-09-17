@@ -23,6 +23,11 @@ func main() {
 		listen = ":8080"
 	}
 
+	logfile, found := os.LookupEnv("LOGFILE")
+	if !found {
+		logfile = ""
+	}
+
 	hub := ws.NewHub(logger)
 	go hub.Run()
 
@@ -33,7 +38,7 @@ func main() {
 
 	// Root websocket handler
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		ws.Handler(logger, hub, b, w, r)
+		ws.Handler(logger, hub, b, w, r, logfile)
 	}).Methods(http.MethodGet)
 
 	// Post new message handler

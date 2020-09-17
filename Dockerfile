@@ -7,7 +7,8 @@ RUN go get ./... \
  && go test ./...\
  && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app cmd/app/main.go
 
-FROM scratch
-USER 100:100
+FROM alpine
+RUN chmod 777 /tmp
 COPY --from=builder /app /app
+USER 100:100
 ENTRYPOINT ["/app"]

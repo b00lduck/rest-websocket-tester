@@ -1,7 +1,9 @@
 package ws
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -12,24 +14,25 @@ import (
 
 const (
 	// Time allowed to write a message to the peer.
-	writeWait = 10 * time.Second
+	writeWait = 5 * time.Second
 
-	// Time allowed to read the message form the peer
+	// Time allowed to read the pong message from the peer
 	pongWait = 60 * time.Second
 
 	// Send pings to peer with this period. Must be less than pongWait.
-	pingPeriod = (pongWait * 9) / 10
+	pingPeriod = 30 * time.Second
 )
 
 type client struct {
-	logger log.SugaredLogger
-	hub    Hub
-	broker broker.Broker
-	conn   ConnI
-	send   chan []byte
-	stop   bool
-	quit   chan bool
-	mutex  *sync.Mutex
+	logger  log.SugaredLogger
+	hub     Hub
+	broker  broker.Broker
+	conn    ConnI
+	send    chan []byte
+	stop    bool
+	quit    chan bool
+	mutex   *sync.Mutex
+	logfile string
 }
 
 func (c *client) Send() chan []byte {
@@ -45,9 +48,12 @@ func (c *client) readPump() {
 		c.quit <- true
 	}()
 
-	//c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+	c.conn.SetReadDeadline(time.Now().Add(10000 * time.Hour))
+	//c.conn.SetPongHandler(func(pong string) error {
+	//	c.logger.Infow("Pong handler", "pong", pong)
+	//	c.conn.SetReadDeadline(time.Now().Add(pongWait))
+	//	return nil
+	//})
 
 	for c.stop != true {
 		_, msg, err := c.conn.ReadMessage()
@@ -61,8 +67,23 @@ func (c *client) readPump() {
 		}
 
 		c.logger.Infow("Got message via websocket",
-			"messageBase64", msg,
 			"messageLen", len(msg))
+
+		if c.logfile != "" {
+			f, err := os.OpenFile(c.logfile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0664)
+			if err != nil {
+				c.logger.Errorw("Error opening logfile", "error", err)
+				return
+			}
+			defer f.Close()
+
+			smg := fmt.Sprintf("---\n%s\n", string(msg))
+
+			if _, err := f.WriteString(string(smg)); err != nil {
+				c.logger.Errorw("Error writing logfile", "error", err)
+				return
+			}
+		}
 	}
 }
 
@@ -132,7 +153,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func Handler(logger log.SugaredLogger, hub Hub, broker broker.Broker, w http.ResponseWriter, r *http.Request) {
+func Handler(logger log.SugaredLogger, hub Hub, broker broker.Broker, w http.ResponseWriter, r *http.Request, logfile string) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		logger.Errorw("error upgrading connection",
@@ -143,14 +164,16 @@ func Handler(logger log.SugaredLogger, hub Hub, broker broker.Broker, w http.Res
 	}
 
 	client := &client{
-		logger: logger,
-		hub:    hub,
-		broker: broker,
-		conn:   conn,
-		send:   make(chan []byte, 32),
-		stop:   false,
-		quit:   make(chan bool, 1),
-		mutex:  &sync.Mutex{}}
+		logger:  logger,
+		hub:     hub,
+		broker:  broker,
+		conn:    conn,
+		send:    make(chan []byte, 32),
+		stop:    false,
+		quit:    make(chan bool, 1),
+		mutex:   &sync.Mutex{},
+		logfile: logfile,
+	}
 
 	client.hub.Register(client)
 	go client.writePump()
